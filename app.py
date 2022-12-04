@@ -54,13 +54,13 @@ def handle_message(event):
         for title in titles[:3]:
             titles_in_string_format += f'{title.string}{urlPkgHomePage}{blocks[index]["href"]}\n'
             # titles_in_string_format += '==========================='
-            titles_in_string_format += '==-==-==-==-==-==-==-==-==-'
+            titles_in_string_format += '==-==-==-==-==-==-==-==-==-==-=='
             index += 1
 
         linebot_api.reply_message(event.reply_token, TextMessage(text=titles_in_string_format))
 
     elif(event.message.text == '[連結地圖]'):
-        linebot_api.reply_message(event.reply_token, TextMessage(text='請將裝置的定位開啟'))
+        linebot_api.reply_message(event.reply_token, TextMessage(text='請將裝置的定位📍開啟'))
         
         # Check GPS
 
