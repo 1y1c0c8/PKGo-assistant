@@ -1,6 +1,6 @@
 ﻿# PKGo-assistant
 ![image](https://github.com/1y1c0c8/PKGo-assistant/blob/main/src/parrot.gif)
-![image](https://github.com/1y1c0c8/PKGo-assistant/blob/main/src/RR_QRcode.png =360x360)
+![image](https://github.com/1y1c0c8/PKGo-assistant/blob/main/src/RR_QRcode.png)
 
 
 ## Reference
