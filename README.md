@@ -3,6 +3,9 @@
 ![image](https://github.com/1y1c0c8/PKGo-assistant/blob/main/src/RR_QRcode.png)
 
 
+### Link to add friend
+https://line.me/R/ti/p/%40919wftug
+
 ## Reference
 - **LineBot + Falsk**
     - [Python and LINE Bot 系列 by. peiiiii](https://ithelp.ithome.com.tw/m/users/20151448/ironman/5396)
