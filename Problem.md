@@ -25,3 +25,6 @@
 - **openai api額度已達上限**
     - [ ] 創新帳號
     - [ ] 用selenium chrome webdriver把用戶訊息丟到chat GPT，再把chat GPT的回覆抓回來
+- **TypeError: object of type 'Response' has no len()**
+    - 從pokemon go trainer club抓資料的時候遇到的error message
+    - 可以參考 ["TypeError: object of type 'Response' has no len()"](https://stackoverflow.com/questions/36709165/typeerror-object-of-type-response-has-no-len) 處理

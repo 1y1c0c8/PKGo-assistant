@@ -33,3 +33,7 @@ https://line.me/R/ti/p/%40919wftug
     - [【Day 27】網路爬蟲 - Selenium篇](https://ithelp.ithome.com.tw/articles/10307735)
 - **.env**
     - [【 Python 】利用 .env 與環境變數隱藏敏感資訊](https://learningsky.io/python-use-environmental-variables-to-hide-sensitive-information/)
+- **正規表達式**
+    - []()
+    - []()
+        > By openai
