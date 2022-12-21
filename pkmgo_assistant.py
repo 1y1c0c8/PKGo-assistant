@@ -12,7 +12,7 @@ class appraise:
         total = int(tokens[0])+int(tokens[1])+int(tokens[2])
         
         if(total == 45):
-            return '100'
+            return 100
         elif(total<45 and total>=43):
             return 10+total*2
         elif(total<43 and total>=39):
