@@ -82,12 +82,12 @@ def handle_message(event):
 
         linebot_api.reply_message(event.reply_token, TextMessage(text=titles_in_string_format))
 
-    elif(event.message.text == '[連結地圖]'):
-        linebot_api.reply_message(event.reply_token, TextMessage(text='請發送位置資訊📍'))
-    elif(event.message.text == "加訓練師好友"):
+    # elif(event.message.text == '[連結地圖]'):
+    #     linebot_api.reply_message(event.reply_token, TextMessage(text='請發送位置資訊📍'))
+    elif(event.message.text == "[新增好友]"):
         add_friends = TextSendMessage(text = mergeInfo())
         linebot_api.reply_message(event.reply_token, add_friends)
-    elif(event.message.text == "[Video]"):
+    elif(event.message.text == "[連結地圖]"):
         Me_at_the_zoo = VideoSendMessage(
             original_content_url= project_url + "/static/Me_at_the_zoo.mp4",
             preview_image_url= project_url + "/static/Me_at_the_zoo.png"
@@ -95,7 +95,7 @@ def handle_message(event):
         linebot_api.reply_message(event.reply_token, Me_at_the_zoo)
         # txt = TextSendMessage(text= str(project_url+"/static/Me_at_the_zoo.mp4"))
         # linebot_api.reply_message(event.reply_token, txt)
-    elif(event.message.text == "[Creater Info]"):
+    elif(event.message.text == "[ＩＮＦＯ]"):
         linktr = TextSendMessage(text="https://linktr.ee/hoffffoh")
         linebot_api.reply_message(event.reply_token, linktr)
     elif(event.message.text == "wake up it's hoff on the board"):
