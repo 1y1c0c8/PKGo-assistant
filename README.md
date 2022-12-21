@@ -37,3 +37,5 @@ https://line.me/R/ti/p/%40919wftug
     - []()
     - []()
         > By openai
+- **圖文選單**
+    - [圖文選單 官方帳號操作手冊](https://tw.linebiz.com/manual/line-official-account/oa-manager-richmenu/)
