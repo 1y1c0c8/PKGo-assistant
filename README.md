@@ -37,5 +37,10 @@ https://line.me/R/ti/p/%40919wftug
     - []()
     - []()
         > By openai
+- **分割字串**
+    - [在 Python 中的空格上拆分字符串](https://www.techiedelight.com/zh-tw/split-string-whitespace-python/)
 - **圖文選單**
     - [圖文選單 官方帳號操作手冊](https://tw.linebiz.com/manual/line-official-account/oa-manager-richmenu/)
+- **Template**
+    - [Line Messaging API 的各種訊息格式](https://ithelp.ithome.com.tw/articles/10198142?sc=rss.qu)
+    - [[Python+LINE Bot教學]提升使用者體驗的按鈕樣板訊息(Buttons template message)實用技巧](https://www.learncodewithmike.com/2020/07/line-bot-buttons-template-message.html)
