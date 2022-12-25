@@ -3,8 +3,8 @@ services:
   name: line-bot-python-flask
   env: python
   repo: https://github.com/1y1c0c8/PKGo-assistant.git
-  buildCommand: cd examples/flask-echo;pip install gunicorn -r requirements.txt
-  startCommand: cd examples/flask-echo;gunicorn app:app
+  buildCommand: ./build.sh #cd examples/flask-echo;pip install gunicorn -r requirements.txt
+  startCommand: gunicorn app:app #cd examples/flask-echo;gunicorn app:app
   plan: free
   autoDeploy: false
   envVars:
