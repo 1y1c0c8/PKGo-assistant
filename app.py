@@ -25,14 +25,14 @@ from pkmgo_assistant import appraise as aps
 from pkmgo_assistant import crawler
 from pkmgo_assistant import speaksman as sm
 
-from env import *
+# from env import *
 
 app = Flask(__name__)
 
 load_dotenv()
-# token = os.getenv("channel_access_token")
-# secret = os.getenv("channel_secret")
-# project_url = os.getenv("project_url")
+token = os.getenv("channel_access_token")
+secret = os.getenv("channel_secret")
+project_url = os.getenv("project_url")
 
 # Chennel access token
 linebot_api = LineBotApi(token)
