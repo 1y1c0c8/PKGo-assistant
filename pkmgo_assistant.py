@@ -1,9 +1,21 @@
 import requests, bs4 
+from linebot.models import TextSendMessage, VideoSendMessage, StickerSendMessage
+from linebot.models import TemplateSendMessage
+from linebot.models import ButtonsTemplate, MessageTemplateAction
+from linebot.models import CarouselTemplate, CarouselColumn, URIAction, MessageAction
+# from linebot.models import QuickReply
+import os
+from dotenv import load_dotenv
+from linebot.exceptions import LineBotApiError
 
-# urlPkgNewsPage = 'https://pokemongolive.com/news?hl=zh_Hant'
-# urlPkgHomePage = 'https://pokemongolive.com'
+
+urlPkgNewsPage = 'https://pokemongolive.com/news?hl=zh_Hant'
+urlPkgHomePage = 'https://pokemongolive.com'
 urlPkgTrainerClubHome = "https://pogotrainer.club"
 urlPkgTrainerClubWorldwide = "https://pogotrainer.club/?sort=worldwide"
+
+load_dotenv()
+project_url = os.getenv("project_url")
 
 
 class appraise:
@@ -66,6 +78,23 @@ class crawler():
 
         return blocks
 
+    def getActivityContentUrl(url):
+        requestGet = requests.get(url)
+        html = bs4.BeautifulSoup(requestGet.text, "html.parser")
+
+        links = html.find_all("a", class_ ='blogList__post')
+        
+        for link in links:
+            print(link.herf())
+
+    def getActivityImg(url):
+        requestGet = requests.get(url)
+        html = bs4.BeautifulSoup(requestGet.text, "html.parser")
+        imgs = html.find_all("img", class_="image")
+
+        return imgs
+
+
     def getTrainerNames(url):
         requestGet = requests.get(urlPkgTrainerClubWorldwide)
         html = bs4.BeautifulSoup(requestGet.text, "html.parser")
@@ -94,12 +123,295 @@ class crawler():
         for index in range(3):
             userInfos.append(str(userNames[index].text)+'\n'+str(userIDs[index].text))
             
-        INFO = f'{userInfos[0]}\n==============\n{userInfos[1]}\n==============\n{userInfos[2]}\n=============='
+        INFO = f'㊝【Trainers】㊝\n{userInfos[0]}\n==-==-==-==-==-==\n{userInfos[1]}\n==-==-==-==-==-==\n{userInfos[2]}\n==-==-==-==-==-=='
         return INFO
 
-    # url = f'{urlPkgHomePage}{block["href"]}'
+class tailor:
+    def trimed(string, maxLen):
+        if(len(string) <= maxLen):
+            return string
+        else:
+            return string[:maxLen-5]+'...'
+
+class wther_broadcaster():
+    city_cor = {
+        '宜蘭縣':'001', '桃園市':'005', '新竹縣':'009', 
+        '苗栗縣':'013', '彰化縣':'017', '南投縣':'021', 
+        '雲林縣':'025', '嘉義縣':'029', '屏東縣':'033', 
+        '臺東縣':'037', '花蓮縣':'041', '澎湖縣':'045', 
+        '基隆市':'049', '新竹市':'053', '嘉義市':'057',
+        '臺北市':'061', '高雄市':'065', '新北市':'069',
+        '臺中市':'073', '臺南市':'077', '連江市':'081',
+        '連江縣':'081', '金門市':'085', '金門縣':'085'
+    }
+    
+    def getCityName():
+        print()
+
+class speaksman:
+
+    def ivk_check_msg():
+        return "教學"
+
+    def resp_check_msg_acp():
+        return ":好啊笑死"
+
+    def resp_check_msg_den():
+        return ":你也把比雕丟在常磐森林嗎？"
+
+    # 靠北喔圖怎麼無法顯示
+    def check_teaching_msg():
+        message = TemplateSendMessage(
+            alt_text="New-User-Msg",
+            template=ButtonsTemplate(
+                title="前面出現了奇怪的人...",
+                text="是否願意接受真新鎮康妮的挑戰？",
+                # thumbnail_image_url="https://github.com/1y1c0c8/PKGo-assistant/blob/main/src/Chain-of-Kenny_trimed.png",
+                thumbnail_image_url="https://github.com/1y1c0c8/PKGo-assistant/blob/main/src/RR_QRcode.png",
+                actions=[
+                    MessageTemplateAction(
+                        label="好",
+                        text=":好啊笑死"
+                    ),
+                    MessageTemplateAction(
+                        label="不要",
+                        text=":你也把比雕丟在常磐森林嗎？"
+                    )
+                ]
+            )
+
+        )
+        return message
+
+    def teach_msg():
+        return "打開圖文選單:\n\t\t計算機圖示->計算寶可夢IV\n\t\t心電圖圖示->查看最近活動\n\t\t定位點圖示->正常功能/彩蛋\n\t\t三個人圖示->顯示三個訓練師ID\n\t\t晴雲雨圖示->取得附近天氣資料\n\t\tlinktr圖示->查看製作者資料"
+
+# ============================
+
+    def button_iv_msg():
+        return "[計算ＩＶ]"
+    
+    def button_activity_msg():
+        return "[最近活動]"
+
+    def button_location_msg():
+        return "[連結地圖]"
+
+    def button_friend_msg():
+        return "[新增好友]"
+
+    def button_weather_msg():
+        return "[近日天氣]"
+    
+    def button_linktr_msg():
+        return "[ＩＮＦＯ]"
 
 
-    # for block in blocks[:3]:
-    #     url = f'{urlPkgHomePage}{block["href"]}'
-    #     print(url)
+    def recieve_right_location_msg():
+        return '[City correct]'
+    def recieve_wrong_location_msg():
+        return '[City wrong]'
+    
+# ============================
+    def button_iv_resp():
+        return "請輸入以下格式：攻擊數值 防禦數值 HP數值"
+
+    def recieve_iv_resp(event):
+        tokens = event.message.text.split()
+        pkm_iv = appraise.aps_compute(tokens)
+        star = appraise.star_check(pkm_iv)
+        
+        return  f'⭐【ＩＶ】⭐\nThis pokemn\'s IV is {star} {pkm_iv} !'
+
+    def button_activity_resp():
+        titles = crawler.getInfoTitle(urlPkgNewsPage)
+        blocks = crawler.getActivityUrl(urlPkgNewsPage)
+
+        titles_in_string_format = "⌛【Activities】⌛"
+
+        index=0
+        # {index+1}.
+        for title in titles[:3]:
+            titles_in_string_format += f'{title.string}{urlPkgHomePage}{blocks[index]["href"]}\n'
+            titles_in_string_format += '==-==-==-==-==-==-==-==-==-==-=='
+            index += 1
+        
+        return titles_in_string_format
+
+    # 圖、第二個title
+    def test_activity_msg():
+        titles = crawler.getInfoTitle(urlPkgNewsPage)
+        blocks = crawler.getActivityUrl(urlPkgNewsPage)
+        imgs = crawler.getActivityImg(urlPkgNewsPage)
+
+        links = imgs[2:5]
+    
+        requestGet1 = requests.get(f'{urlPkgHomePage}{blocks[0]["href"]}')
+        html1 = bs4.BeautifulSoup(requestGet1.text, "html.parser")
+        try:
+            content1 = html1.find("div", class_ = 'blogPost__post__body')
+            act1 = CarouselColumn(
+                thumbnail_image_url=imgs[2]["src"],
+                title = tailor.trimed(titles[0].string, 40),
+                # text = tailor.trimed(content1.text, 50),
+                text = tailor.trimed(content1.text, 55),
+                actions=[
+                    URIAction(
+                        label="More info...",
+                        uri= f'{urlPkgHomePage}{blocks[0]["href"]}'
+                    )
+                ]
+            )
+        except:
+            act1 = CarouselColumn(
+                thumbnail_image_url=imgs[2]["src"],
+                title = tailor.trimed(titles[0].string, 40),
+                text = '$ 請點擊More info...以查看更多',
+                actions=[
+                    URIAction(
+                        label="More info...",
+                        uri= f'{urlPkgHomePage}{blocks[0]["href"]}'
+                    )
+                ]
+            )
+
+
+        requestGet2 = requests.get(f'{urlPkgHomePage}{blocks[1]["href"]}')
+        html2 = bs4.BeautifulSoup(requestGet2.text, "html.parser")
+        try:
+            content2 = html2.find("div", class_ = 'blogPost__post__body')
+            act2 = CarouselColumn(
+                thumbnail_image_url=imgs[3]["src"],
+                title = tailor.trimed(titles[1].string, 40),
+                text= tailor.trimed(content2.text, 55),
+                actions=[
+                    URIAction(
+                        label="More info...",
+                        uri=f'{urlPkgHomePage}{blocks[1]["href"]}'
+                    )
+                ]
+            )
+        except:
+            act2 = CarouselColumn(
+                thumbnail_image_url=imgs[3]["src"],
+                title = tailor.trimed(titles[1].string, 40),
+                text= '$ 請點擊More info...以查看更多',
+                actions=[
+                    URIAction(
+                        label="More info...",
+                        uri=f'{urlPkgHomePage}{blocks[1]["href"]}'
+                    )
+                ]
+            )
+            
+
+        requestGet3 = requests.get(f'{urlPkgHomePage}{blocks[2]["href"]}')
+        html3 = bs4.BeautifulSoup(requestGet3.text, "html.parser")
+        try:
+            content3 = html3.find("div", class_ = 'blogPost__post__body')
+            act3 = CarouselColumn(
+                thumbnail_image_url=imgs[4]["src"],
+                title = tailor.trimed(titles[2].string, 40),
+                # text= tailor.trimed(content3.text, 50),
+                text= tailor.trimed(content3.text, 55),
+                actions=[
+                    URIAction(
+                        label="More info...",
+                        uri=f'{urlPkgHomePage}{blocks[2]["href"]}'
+                    )
+                ]
+            )
+        except:
+            act3 = CarouselColumn(
+                thumbnail_image_url=imgs[4]["src"],
+                title = tailor.trimed(titles[2].string, 40),
+                # text= tailor.trimed(content3.text, 50),
+                text= '$ 請點擊More info...以查看更多',
+                actions=[
+                    URIAction(
+                        label="More info...",
+                        uri=f'{urlPkgHomePage}{blocks[2]["href"]}'
+                    )
+                ]
+            )
+        
+        message = TemplateSendMessage(
+            alt_text = "Activity Info",
+            template=CarouselTemplate(
+                columns=[
+                    act1, act2, act3
+                ]
+            )
+        )
+
+        return message
+
+    def button_location_resp():
+        Me_at_the_zoo = VideoSendMessage(
+            original_content_url= project_url + "/static/Me_at_the_zoo.mp4",
+            preview_image_url= project_url + "/static/Me_at_the_zoo.png"
+        )
+        
+        return Me_at_the_zoo
+    
+    def button_friend_resp():
+        return crawler.mergeInfo()
+
+    def button_weather_resp():
+        return '請發送位置資訊📍'
+
+    def button_linktr_resp():
+        return "https://linktr.ee/hoffffoh"
+
+# ============================
+    
+
+    def test_msg():
+        return "wake up it's hoff on the board"
+    
+    def test_msg_resp():
+        return "做動ing"
+
+    def test_msg_sticker():
+        return "sticker"
+
+    def test_msg_sticker_resp():
+        message = StickerSendMessage(
+            package_id= "789",
+            sticker_id= "10855"
+        )
+
+        return message
+        
+    def test_template_msg():
+        return "template"
+
+    def test_template_msg_resp():
+        message = TemplateSendMessage(
+            alt_text="Buttons template",
+            template=ButtonsTemplate(
+                title = "Menu",
+                text="請選擇起始站",
+                actions=[
+                    MessageTemplateAction(
+                    label="台北市",
+                    text = "台北市"
+                    ),
+                    MessageTemplateAction(
+                        label="台中市",
+                        text="台中市"
+                    ),
+                    MessageTemplateAction(
+                        label="高雄市",
+                        text="高雄市"
+                    )
+                ]
+            )
+        )
+
+        return message
+
+    # def test_location_quickreply():
+        
+    
+    
