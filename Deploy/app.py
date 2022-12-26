@@ -7,9 +7,9 @@ from linebot.models import TextMessage, TextSendMessage
 from linebot.models import LocationMessage, LocationSendMessage
 from linebot.models import ImageMessage, ImageSendMessage
 from linebot.models import VideoMessage, VideoSendMessage
-from linebot.models import QuickReply, QuickReplyButton, MessageAction
 from linebot.exceptions import LineBotApiError
 
+from linebot.models import QuickReply, QuickReplyButton, MessageAction
 # For crawler
 # from crawler import getInfoTitle, getActivityUrl, mergeInfo
 # For GPS
@@ -21,9 +21,9 @@ from dotenv import load_dotenv
 # For expression
 import re
 
-from pkmgo_assistant import appraise as aps
-from pkmgo_assistant import crawler
-from pkmgo_assistant import speaksman as sm
+from Deploy.pkmgo_assistant import appraise as aps
+from Deploy.pkmgo_assistant import crawler, wther_broadcaster
+from Deploy.pkmgo_assistant import speaksman as sm
 
 # from env import *
 
@@ -39,6 +39,8 @@ linebot_api = LineBotApi(token)
 # Channel secret
 handler = WebhookHandler(secret)
 
+cityName = ''
+
 
 urlPkgHomePage = 'https://pokemongolive.com'
 urlPkgNewsPage = 'https://pokemongolive.com/news?hl=zh_Hant'
@@ -46,6 +48,7 @@ urlPkgTrainerClubHomePage = "https://pogotrainer.club"
 urlPkgTrainerClubWorldwidePage = "https://pogotrainer.club/?sort=worldwide"
 
 appraise_pattern = r'[0-9]{1,2}\s[0-9]{1,2}\s[0-9]{1,2}'
+weather_info_pattern = r"\[Check \{(.+?)\} weather\]"
 
 # @app.route('/')
 # def homepage():
@@ -91,27 +94,21 @@ def handle_message(event):
     
     elif(event.message.text == sm.button_weather_msg()):
         linebot_api.reply_message(event.reply_token, TextSendMessage(text = sm.button_weather_resp()))
+    elif(re.fullmatch(weather_info_pattern, event.message.text)):
+        match = re.fullmatch(weather_info_pattern, event.message.text)
+        if match:
+            cityName = match.group(1)
+            linebot_api.reply_message(event.reply_token, TextSendMessage(text=sm.city_weather_info(cityName)))
+    
     # Location
     elif(event.message.text == sm.button_location_msg()):
         linebot_api.reply_message(event.reply_token, sm.button_location_resp())
         # txt = TextSendMessage(text= str(project_url+"/static/Me_at_the_zoo.mp4"))
         # linebot_api.reply_message(event.reply_token, txt)
     
-    elif(event.message.text == sm.recieve_right_location_msg):
-        print('city correct')
-        linebot_api.reply_message(
-            event.reply_token, 
-            TextSendMessage(
-                text=f'Check recent weather or else?',
-                quick_reply = QuickReply(
-                    items=[
-                        QuickReplyButton(action=MessageAction(label='Weather', text='[Check weather]')),
-                        QuickReplyButton(action=MessageAction(label='Else', text='[Check else]'))
-                    ]
-                )
-            )
-        )
-    
+    elif(event.message.text == sm.recieve_right_location_msg()):
+        
+        linebot_api.reply_message(event.reply_token, sm.function_choose_base_location())        
     elif(event.message.text == sm.recieve_wrong_location_msg):
         linebot_api.reply_message(event.reply_token, TextMessage(text='請再次發送位置資訊📍'))
     
@@ -149,7 +146,9 @@ def handle_location_message(event):
             tokens = []
             tokens = location.address.split()
             # for token in tokens:
-            print(tokens[-3])
+            cityName = tokens[-3][0:3]
+            print(cityName)
+            print(type(cityName))
             
             linebot_api.reply_message(
                 event.reply_token, 

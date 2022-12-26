@@ -3,7 +3,8 @@ from linebot.models import TextSendMessage, VideoSendMessage, StickerSendMessage
 from linebot.models import TemplateSendMessage
 from linebot.models import ButtonsTemplate, MessageTemplateAction
 from linebot.models import CarouselTemplate, CarouselColumn, URIAction, MessageAction
-# from linebot.models import QuickReply
+from linebot.models import QuickReply, QuickReplyButton
+
 import os
 from dotenv import load_dotenv
 from linebot.exceptions import LineBotApiError
@@ -145,8 +146,13 @@ class wther_broadcaster():
         '連江縣':'081', '金門市':'085', '金門縣':'085'
     }
     
-    def getCityName():
-        print()
+    def getCityWeather(cityName):
+        print(f'city name -> city code {cityName} -> {wther_broadcaster.city_cor[cityName]}')
+        # url = 'http://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-077?Authorization=CWB-01E5C04E-C74A-40E3-B75A-B07D9AFBCF84'
+        # returnContent = requests.get(url)
+        # html = bs4.BeautifulSoup(returnContent, "html.parser")
+        # print(html.text)
+        return f'city name -> city code {cityName} -> {wther_broadcaster.city_cor[cityName]}'
 
 class speaksman:
 
@@ -211,6 +217,14 @@ class speaksman:
         return '[City correct]'
     def recieve_wrong_location_msg():
         return '[City wrong]'
+    def request_check_weather(cityName):
+        return f"[Check {cityName} weather]"
+    def request_check_else(cityName):
+        return f"[Check {cityName} info]"
+    
+    def city_weather_info(cityName):
+        wther_broadcaster.getCityWeather(cityName)
+        
     
 # ============================
     def button_iv_resp():
@@ -353,6 +367,18 @@ class speaksman:
         )
         
         return Me_at_the_zoo
+    
+    def function_choose_base_location():
+        message = TextSendMessage(
+                    text=f'Check recent weather or else?',
+                    quick_reply = QuickReply(
+                        items=[
+                            QuickReplyButton(action=MessageAction(label='Weather', text='[Check weather]')),
+                            QuickReplyButton(action=MessageAction(label='Else', text='[Check else]'))
+                        ]
+                    )
+                )
+        return message
     
     def button_friend_resp():
         return crawler.mergeInfo()

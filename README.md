@@ -44,3 +44,9 @@ https://line.me/R/ti/p/%40919wftug
 - **Template**
     - [Line Messaging API 的各種訊息格式](https://ithelp.ithome.com.tw/articles/10198142?sc=rss.qu)
     - [[Python+LINE Bot教學]提升使用者體驗的按鈕樣板訊息(Buttons template message)實用技巧](https://www.learncodewithmike.com/2020/07/line-bot-buttons-template-message.html)
+- **Deploy**
+    - Render
+    - Docker
+        - Dockerfile
+            - [How to run and host Flask in a Docker container](https://youtu.be/9tErxxGpOM4)
+
