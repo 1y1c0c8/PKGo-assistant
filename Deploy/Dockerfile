@@ -7,7 +7,6 @@ RUN pip install --no-cache-dir -r requirement
 # COPY {Local fileName} {fileName in Docker}
 COPY app.py /app/app.py 
 COPY pkmgo_assistant.py /app/pkmgo_assistant.py
-COPY .env /app/.env
 COPY ./static /app/static
 
 ENV PATH=/home/app/.local/bin:$PATH
