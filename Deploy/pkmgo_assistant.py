@@ -15,6 +15,21 @@ urlPkgHomePage = 'https://pokemongolive.com'
 urlPkgTrainerClubHome = "https://pogotrainer.club"
 urlPkgTrainerClubWorldwide = "https://pogotrainer.club/?sort=worldwide"
 
+url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-01E5C04E-C74A-40E3-B75A-B07D9AFBCF84&format=JSON'
+data = requests.get(url)
+data_json = data.json()
+city_cor = {
+        '嘉義縣':0, '新北市':1, '嘉義市':2, 
+        '新竹縣':3, '新竹市':4, '臺北市':5, 
+        '臺南市':6, '宜蘭縣':7, '苗栗縣':8, 
+        '雲林縣':9, '花蓮縣':10, '臺中市':11, 
+        '臺東縣':12, '桃園市':13, '南投縣':14,
+        '高雄市':15, '金門縣':16, '屏東縣':17,
+        '基隆市':18, '澎湖縣':19, '彰化縣':20,
+        '連江縣':21
+    }
+
+
 load_dotenv()
 project_url = os.getenv("project_url")
 
@@ -135,24 +150,38 @@ class tailor:
             return string[:maxLen-5]+'...'
 
 class wther_broadcaster():
-    city_cor = {
-        '宜蘭縣':'001', '桃園市':'005', '新竹縣':'009', 
-        '苗栗縣':'013', '彰化縣':'017', '南投縣':'021', 
-        '雲林縣':'025', '嘉義縣':'029', '屏東縣':'033', 
-        '臺東縣':'037', '花蓮縣':'041', '澎湖縣':'045', 
-        '基隆市':'049', '新竹市':'053', '嘉義市':'057',
-        '臺北市':'061', '高雄市':'065', '新北市':'069',
-        '臺中市':'073', '臺南市':'077', '連江市':'081',
-        '連江縣':'081', '金門市':'085', '金門縣':'085'
-    }
     
-    def getCityWeather(cityName):
-        print(f'city name -> city code {cityName} -> {wther_broadcaster.city_cor[cityName]}')
-        # url = 'http://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-077?Authorization=CWB-01E5C04E-C74A-40E3-B75A-B07D9AFBCF84'
-        # returnContent = requests.get(url)
-        # html = bs4.BeautifulSoup(returnContent, "html.parser")
-        # print(html.text)
-        return f'city name -> city code {cityName} -> {wther_broadcaster.city_cor[cityName]}'
+    def getCityWeather(city):
+        # print(data_json['records']['location'][city_cor[cityName]]['weatherElement'][1]['time'][2]['parameter']['parameterName'])
+        weatherInfos = {}
+        for cityInfo in data_json['records']['location']:
+            cityName = cityInfo['locationName']
+            for feature in cityInfo['weatherElement']:
+                weather = feature['elementName']
+
+                if cityName not in weatherInfos:
+                    weatherInfos[cityName] = {weather: feature}
+
+                if weather not in weatherInfos[cityName]:
+                    weatherInfos[cityName][weather] = feature
+        weather = "CI"
+       
+        elementName = weatherInfos[city]["CI"]["elementName"]
+        print(elementName)
+        time = weatherInfos[city]["CI"]["time"]
+        message = ''
+        for info in time:
+            st = info['startTime']
+            et = info["endTime"]
+            ds = info['parameter']['parameterName']
+            message += f'from {st}\nto {et}\n{ds}\n'
+        message += '\b'
+        return message
+        # print(f'{city}\n\t{weatherInfos[city]["CI"]}')
+        
+        
+        
+    
 
 class speaksman:
 
@@ -190,7 +219,7 @@ class speaksman:
         return message
 
     def teach_msg():
-        return "打開圖文選單:\n\t\t計算機圖示->計算寶可夢IV\n\t\t心電圖圖示->查看最近活動\n\t\t定位點圖示->正常功能/彩蛋\n\t\t三個人圖示->顯示三個訓練師ID\n\t\t晴雲雨圖示->取得附近天氣資料\n\t\tlinktr圖示->查看製作者資料"
+        return "打開圖文選單:\n\t\t計算機圖示->計算寶可夢IV\n\t\t心電圖圖示->查看最近活動\n\t\t定位點圖示->正常功能/彩蛋\n\t\t三個人圖示->顯示三個訓練師ID\n\t\t晴雲雨圖示->取得附近天氣資料\n\t\tlinktr圖示->查看製作者資料\n輸入help以查看指令說明"
 
 # ============================
 
@@ -228,11 +257,11 @@ class speaksman:
     
 # ============================
     def button_iv_resp():
-        return "請輸入以下格式：攻擊數值 防禦數值 HP數值"
+        return "請輸入以下格式：adh 攻擊數值 防禦數值 HP數值"
 
     def recieve_iv_resp(event):
         tokens = event.message.text.split()
-        pkm_iv = appraise.aps_compute(tokens)
+        pkm_iv = appraise.aps_compute(tokens[1:4])
         star = appraise.star_check(pkm_iv)
         
         return  f'⭐【ＩＶ】⭐\nThis pokemn\'s IV is {star} {pkm_iv} !'
@@ -390,54 +419,9 @@ class speaksman:
         return "https://linktr.ee/hoffffoh"
 
 # ============================
-    
 
     def test_msg():
         return "wake up it's hoff on the board"
     
     def test_msg_resp():
         return "做動ing"
-
-    def test_msg_sticker():
-        return "sticker"
-
-    def test_msg_sticker_resp():
-        message = StickerSendMessage(
-            package_id= "789",
-            sticker_id= "10855"
-        )
-
-        return message
-        
-    def test_template_msg():
-        return "template"
-
-    def test_template_msg_resp():
-        message = TemplateSendMessage(
-            alt_text="Buttons template",
-            template=ButtonsTemplate(
-                title = "Menu",
-                text="請選擇起始站",
-                actions=[
-                    MessageTemplateAction(
-                    label="台北市",
-                    text = "台北市"
-                    ),
-                    MessageTemplateAction(
-                        label="台中市",
-                        text="台中市"
-                    ),
-                    MessageTemplateAction(
-                        label="高雄市",
-                        text="高雄市"
-                    )
-                ]
-            )
-        )
-
-        return message
-
-    # def test_location_quickreply():
-        
-    
-    

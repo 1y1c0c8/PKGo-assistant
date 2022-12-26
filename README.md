@@ -6,6 +6,11 @@
 ### Link to add friend
 https://line.me/R/ti/p/%40919wftug
 
+### Introduction
+- 因為有在玩
+
+
+
 ## Reference
 - **LineBot + Falsk**
     - [Python and LINE Bot 系列 by. peiiiii](https://ithelp.ithome.com.tw/m/users/20151448/ironman/5396)
