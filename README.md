@@ -7,7 +7,24 @@
 https://line.me/R/ti/p/%40919wftug
 
 ### Introduction
-- 因為有在玩
+- 起因
+    - 因為在玩Pokemon Go時希望某些功能能夠集成，所以藉此機會開發PKGo Assistant
+- FSM
+    - [](https://github.com/1y1c0c8/PKGo-assistant/blob/main/src/321238339_551179120382787_3088986884276905712_n.jpg)
+- 基本功能
+    - 計算寶可夢IV(appraise)
+        - 純粹一推倒公式計算appraise
+    - 抓取最近活動資訊
+        - 利用bs4爬蟲，從官網獲得最新活動資訊
+    - 地點資訊
+        > 最後來不及做完，所以變成類彩蛋qq
+        - 利用VideoSendMessage，這真的不是Rick Roll
+    - 新增訓練家好友
+        - 從trainer club交流網站抓取玩家暱稱以及ID
+    - 近日天氣
+        - 利用中央氣象局提供之api獲取資訊
+    - 創作者資訊
+        -Linktr，助教有興趣可以follow我的攝影帳號
 
 
 
