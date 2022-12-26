@@ -14,8 +14,8 @@ ENV PATH=$PATH:/user/local/python3/bin:$PATH
 
 # CMD ["cd", "/app"]
 # CMD ["ls", "-l"]
-CMD ["gunicorn", "app:app"]
-
+# CMD ["gunicorn", "app:app"]
+CMD ["python3", "/app/app.py"]
 
 # FROM ubuntu
 
