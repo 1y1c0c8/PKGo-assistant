@@ -21,9 +21,9 @@ from dotenv import load_dotenv
 # For expression
 import re
 
-from Deploy.pkmgo_assistant import appraise as aps
-from Deploy.pkmgo_assistant import crawler, wther_broadcaster
-from Deploy.pkmgo_assistant import speaksman as sm
+from pkmgo_assistant import appraise as aps
+from pkmgo_assistant import crawler, wther_broadcaster
+from pkmgo_assistant import speaksman as sm
 
 # from env import *
 
