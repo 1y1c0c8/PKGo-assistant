@@ -1,8 +1,8 @@
 FROM python:3.7
 
 WORKDIR /app
-COPY requirement.txt ./
-RUN pip install --no-cache-dir -r requirement
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # COPY {Local fileName} {fileName in Docker}
 COPY app.py /app/app.py 
